@@ -78,8 +78,6 @@ const setState = (updatedState) => {
   Object.keys(updatedState).forEach((prop) => {
     state[prop] = updatedState[prop];
   });
-
-  render();
 };
 
 // Reusable functions for event listeners
@@ -98,6 +96,8 @@ const increaseQuantity = (itemName) => {
   thisItem.quantity++;
 
   setState({ cart: myCart });
+  renderCartList();
+  renderTotalCost();
 };
 
 const decreaseQuantity = (itemName) => {
@@ -108,6 +108,8 @@ const decreaseQuantity = (itemName) => {
   myCart = myCart.filter((item) => item.quantity > 0);
 
   setState({ cart: myCart });
+  renderCartList();
+  renderTotalCost();
 };
 
 const addToCart = (itemName) => {
@@ -135,6 +137,8 @@ const addToCart = (itemName) => {
   });
 */
   setState({ cart: myCart });
+  renderCartList();
+  renderTotalCost();
 };
 
 // Reusable functions for creating elements
@@ -175,6 +179,7 @@ fruitBtn.innerText = "Show Fruits";
 fruitBtn.addEventListener("click", (event) => {
   const fruits = state.items.filter((item) => item.type === "fruit");
   setState({ itemsToRender: fruits });
+  renderShelf();
 });
 
 const vegeBtn = createButton();
@@ -183,6 +188,7 @@ vegeBtn.innerText = "Show Vegetables";
 vegeBtn.addEventListener("click", (event) => {
   const vegetable = state.items.filter((item) => item.type === "vegetable");
   setState({ itemsToRender: vegetable });
+  renderShelf();
 });
 
 const allItemsBtn = createButton();
@@ -190,7 +196,7 @@ filterButtonContainer.appendChild(allItemsBtn);
 allItemsBtn.innerText = "Show All Items";
 allItemsBtn.addEventListener("click", (event) => {
   setState({ itemsToRender: state.items });
-  renderShelf(state.itemsToRender);
+  renderShelf();
 });
 
 const dropDownWrap = document.createElement("div");
@@ -229,6 +235,7 @@ dropDownAlpha.addEventListener("click", (event) => {
   });
 
   setState({ itemsToRender: myShelf });
+  renderShelf();
 });
 
 const dropDownPrice = createButton();
@@ -242,6 +249,7 @@ dropDownPrice.addEventListener("click", (event) => {
   });
 
   setState({ itemsToRender: myShelf });
+  renderShelf();
 });
 
 // Shelf Item
