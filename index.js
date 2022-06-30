@@ -64,16 +64,12 @@ const state = {
   cart: [],
 };
 
-const cartItemList = document.querySelector(".cart--item-list");
 const shopItemList = document.querySelector(".store--item-list");
+const cartItemList = document.querySelector(".cart--item-list");
 
 // Setters and getters
-const getItemFromShelf = (itemName) => {
-  return state.items.find((item) => itemName === item.name);
-};
-
-const getItemFromCart = (itemName, cart = state.cart) => {
-  return cart.find((item) => itemName === item.name);
+const getItemFrom = (itemName, source) => {
+  return source.find((item) => itemName === item.name);
 };
 
 const setState = (updatedState) => {
@@ -81,13 +77,14 @@ const setState = (updatedState) => {
     state[prop] = updatedState[prop];
   });
 
-  render();
+  renderCartList();
+  renderTotalCost();
 };
 
 // Reusable functions for event listeners
 const increaseQuantity = (itemName) => {
   const myCart = [...state.cart];
-  const thisItem = getItemFromCart(itemName, myCart);
+  const thisItem = getItemFrom(itemName, myCart);
   thisItem.quantity++;
 
   setState({ cart: myCart });
@@ -95,7 +92,7 @@ const increaseQuantity = (itemName) => {
 
 const decreaseQuantity = (itemName) => {
   let myCart = [...state.cart];
-  const thisItem = getItemFromCart(itemName, myCart);
+  const thisItem = getItemFrom(itemName, myCart);
   thisItem.quantity--;
 
   myCart = myCart.filter((item) => item.quantity > 0);
@@ -113,9 +110,19 @@ const addToCart = (itemName) => {
     return;
   }
 
-  const thisItem = getItemFromShelf(itemName);
+  const thisItem = getItemFrom(itemName, state.items);
   thisItem.quantity = 1;
   myCart.push(thisItem);
+
+  myCart.sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  });
 
   setState({ cart: myCart });
 };
