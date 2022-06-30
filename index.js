@@ -199,7 +199,7 @@ dropDownWrap.appendChild(sortBtn);
 sortBtn.innerText = "Sort by";
 sortBtn.classList.add("sort-btn");
 sortBtn.style.position = "relative";
-sortBtn.addEventListener("click", (event) => {
+sortBtn.addEventListener("mouseover", (event) => {
   isPresent = !isPresent;
   updateDisplay();
 });
@@ -208,6 +208,7 @@ const dropDownContentWrap = document.createElement("div");
 dropDownWrap.appendChild(dropDownContentWrap);
 dropDownContentWrap.classList.add("drop-down-wrap");
 dropDownContentWrap.style.position = "absolute";
+dropDownContentWrap.style.display = "none";
 
 const dropDownAlpha = createButton();
 dropDownContentWrap.appendChild(dropDownAlpha);
