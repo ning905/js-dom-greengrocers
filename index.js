@@ -4,61 +4,61 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       type: "vegetable",
-      price: 0.35,
+      price: 0.75,
     },
     {
       id: "002-carrot",
       name: "carrot",
       type: "vegetable",
-      price: 0.35,
+      price: 0.1,
     },
     {
       id: "003-apple",
       name: "apple",
       type: "fruit",
-      price: 0.35,
+      price: 0.9,
     },
     {
       id: "004-apricot",
       name: "apricot",
       type: "fruit",
-      price: 0.35,
+      price: 0.25,
     },
     {
       id: "005-avocado",
       name: "avocado",
       type: "fruit",
-      price: 0.35,
+      price: 5,
     },
     {
       id: "006-bananas",
       name: "bananas",
       type: "fruit",
-      price: 0.35,
+      price: 0.3,
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       type: "vegetable",
-      price: 0.35,
+      price: 0.6,
     },
     {
       id: "008-berry",
       name: "berry",
       type: "fruit",
-      price: 0.35,
+      price: 3,
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       type: "fruit",
-      price: 0.35,
+      price: 5,
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       type: "vegetable",
-      price: 0.35,
+      price: 1,
     },
   ],
   cart: [],
@@ -82,6 +82,15 @@ const setState = (updatedState) => {
 };
 
 // Reusable functions for event listeners
+let isPresent = false;
+const updateDisplay = () => {
+  if (isPresent) {
+    dropDownContentWrap.style.display = "block";
+  } else {
+    dropDownContentWrap.style.display = "none";
+  }
+};
+
 const increaseQuantity = (itemName) => {
   const myCart = [...state.cart];
   const thisItem = getItemFrom(itemName, myCart);
@@ -180,6 +189,56 @@ filterButtonContainer.appendChild(allItemsBtn);
 allItemsBtn.innerText = "Show All Items";
 allItemsBtn.addEventListener("click", (event) => {
   renderShelf();
+});
+
+const dropDownWrap = document.createElement("div");
+filterButtonContainer.appendChild(dropDownWrap);
+
+const sortBtn = createButton();
+dropDownWrap.appendChild(sortBtn);
+sortBtn.innerText = "Sort by";
+sortBtn.classList.add("sort-btn");
+sortBtn.style.position = "relative";
+sortBtn.addEventListener("click", (event) => {
+  isPresent = !isPresent;
+  updateDisplay();
+});
+
+const dropDownContentWrap = document.createElement("div");
+dropDownWrap.appendChild(dropDownContentWrap);
+dropDownContentWrap.classList.add("drop-down-wrap");
+dropDownContentWrap.style.position = "absolute";
+
+const dropDownAlpha = createButton();
+dropDownContentWrap.appendChild(dropDownAlpha);
+dropDownAlpha.innerText = "name";
+dropDownAlpha.style.display = "block";
+dropDownAlpha.addEventListener("click", (event) => {
+  const myShelf = [...state.items];
+  myShelf.sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  });
+
+  renderShelf(myShelf);
+});
+
+const dropDownPrice = createButton();
+dropDownContentWrap.appendChild(dropDownPrice);
+dropDownPrice.innerText = "price";
+dropDownPrice.style.display = "block";
+dropDownPrice.addEventListener("click", (event) => {
+  const myShelf = [...state.items];
+  myShelf.sort((a, b) => {
+    return a.price - b.price;
+  });
+
+  renderShelf(myShelf);
 });
 
 // Shelf Item
