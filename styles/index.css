@@ -20,17 +20,6 @@ button {
   cursor: pointer;
 }
 
-/* .drop-down-wrap {
-  display: none;
-  z-index: 1;
-  position: absolute;
-}
-
-.sort-btn:hover .drop-down-wrap {
-  display: block;
-  position: relative;
-} */
-
 /* Store */
 
 #store {
