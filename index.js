@@ -64,6 +64,8 @@ const state = {
   cart: [],
 };
 
+state.itemsToRender = state.items;
+
 const shopItemList = document.querySelector(".store--item-list");
 const cartItemList = document.querySelector(".cart--item-list");
 
@@ -77,8 +79,7 @@ const setState = (updatedState) => {
     state[prop] = updatedState[prop];
   });
 
-  renderCartList();
-  renderTotalCost();
+  render();
 };
 
 // Reusable functions for event listeners
@@ -122,7 +123,7 @@ const addToCart = (itemName) => {
   const thisItem = getItemFrom(itemName, state.items);
   thisItem.quantity = 1;
   myCart.push(thisItem);
-
+  /*
   myCart.sort((a, b) => {
     if (a.name < b.name) {
       return -1;
@@ -132,7 +133,7 @@ const addToCart = (itemName) => {
     }
     return 0;
   });
-
+*/
   setState({ cart: myCart });
 };
 
@@ -173,7 +174,7 @@ filterButtonContainer.appendChild(fruitBtn);
 fruitBtn.innerText = "Show Fruits";
 fruitBtn.addEventListener("click", (event) => {
   const fruits = state.items.filter((item) => item.type === "fruit");
-  renderShelf(fruits);
+  setState({ itemsToRender: fruits });
 });
 
 const vegeBtn = createButton();
@@ -181,14 +182,15 @@ filterButtonContainer.appendChild(vegeBtn);
 vegeBtn.innerText = "Show Vegetables";
 vegeBtn.addEventListener("click", (event) => {
   const vegetable = state.items.filter((item) => item.type === "vegetable");
-  renderShelf(vegetable);
+  setState({ itemsToRender: vegetable });
 });
 
 const allItemsBtn = createButton();
 filterButtonContainer.appendChild(allItemsBtn);
 allItemsBtn.innerText = "Show All Items";
 allItemsBtn.addEventListener("click", (event) => {
-  renderShelf();
+  setState({ itemsToRender: state.items });
+  renderShelf(state.itemsToRender);
 });
 
 const dropDownWrap = document.createElement("div");
@@ -215,7 +217,7 @@ dropDownContentWrap.appendChild(dropDownAlpha);
 dropDownAlpha.innerText = "name";
 dropDownAlpha.style.display = "block";
 dropDownAlpha.addEventListener("click", (event) => {
-  const myShelf = [...state.items];
+  const myShelf = [...state.itemsToRender];
   myShelf.sort((a, b) => {
     if (a.name < b.name) {
       return -1;
@@ -226,7 +228,7 @@ dropDownAlpha.addEventListener("click", (event) => {
     return 0;
   });
 
-  renderShelf(myShelf);
+  setState({ itemsToRender: myShelf });
 });
 
 const dropDownPrice = createButton();
@@ -234,12 +236,12 @@ dropDownContentWrap.appendChild(dropDownPrice);
 dropDownPrice.innerText = "price";
 dropDownPrice.style.display = "block";
 dropDownPrice.addEventListener("click", (event) => {
-  const myShelf = [...state.items];
+  const myShelf = [...state.itemsToRender];
   myShelf.sort((a, b) => {
     return a.price - b.price;
   });
 
-  renderShelf(myShelf);
+  setState({ itemsToRender: myShelf });
 });
 
 // Shelf Item
@@ -265,7 +267,7 @@ const createShopItem = (item) => {
   return li;
 };
 
-const renderShelf = (items = state.items) => {
+const renderShelf = (items = state.itemsToRender) => {
   shopItemList.innerHTML = "";
 
   const myShelf = [...items];
